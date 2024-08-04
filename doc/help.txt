@@ -1,0 +1,32 @@
+=> Todo list
+
+kar:
+    kar jadid
+    daste bandi kar ha
+    jostojo kardan roy kar ha *
+    Tarbit namayesh kar ha ro vaz konam
+    namayesh kar ha
+    basersi in ke anjamesh dadam ya na
+    hazfe kar anjam shode
+    namaseh etelaat user *
+    tagir theme*
+    namayesh vazeyat anjam task ha
+    namayesh task haye emroz
+    hazf hamye task ha
+
+    ---------------------
+    API
+    Database
+
+========================================
+Front-end: (React,)
+New task => component.jsx => From,Input,Button => Send new task data
+Task Category => component.jsx => props(Get Data, Get Asase Category) => Data Dastebandy shode
+
+
+Back-end:
+New task => data => save
+Task Category => Post data for client
+Search task => get id, filter data => send data
+
+

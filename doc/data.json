@@ -1,0 +1,34 @@
+{
+  "tasks": [
+    {
+      "title": "homework",
+      "date": "2024-07-05T18:08:31.088Z",
+      "description": "react homework",
+      "directory": "main",
+      "important": false,
+      "status": false
+    },
+    {
+      "title": "sdfsdfsaf",
+      "date": "1/1/1",
+      "description": "sdfsdfasdfsdfsadfasdafdfghflghsdfjhghs",
+      "directory": "home",
+      "important": false,
+      "status": true
+    },
+    {
+      "title": "sdfsdfsaf",
+      "date": "1/1/1",
+      "description": "sdfsdfasdfsdfsadfasdafdfghflghsdfjhghs",
+      "directory": "shop",
+      "important": false,
+      "status": true
+    }
+  ],
+  "directories": [
+    {
+      "title": "sdfsdfsaf",
+      "description": "sdfsdfasdfsdfsadfasdafdfghflghsdfjhghs"
+    }
+  ]
+}
