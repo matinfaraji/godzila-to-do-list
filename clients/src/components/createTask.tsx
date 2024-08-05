@@ -5,6 +5,9 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
+import { useAppDispatch } from "./store/store";
+import { addTask } from "./store/features/taskSlice";
+import { v4 as uuidv4 } from "uuid"; 
 
 export interface SimpleDialogProps {
   open: boolean;
@@ -13,18 +16,30 @@ export interface SimpleDialogProps {
 
 function SimpleDialog(props: SimpleDialogProps) {
   const { onClose, open } = props;
+  const dispatch = useAppDispatch();
 
-  const handleClose = () => {
+  const handleSubmit = () => {
+    const formData = {
+      id: uuidv4(),
+      title: (document.getElementById("input1") as HTMLInputElement).value,
+      description: (document.getElementById("input2") as HTMLInputElement).value,
+      date: (document.getElementById("date") as HTMLInputElement).value,
+      directory: "", // Assuming directory is not part of the form
+      important: (document.getElementById("important") as HTMLInputElement).checked,
+      status: (document.getElementById("status") as HTMLInputElement).checked,
+    };
+    dispatch(addTask(formData));
     onClose("submit");
   };
 
   return (
-    <Dialog onClose={handleClose} open={open}>
+    <Dialog onClose={() => onClose("cancel")} open={open}>
       <DialogTitle>Enter Details</DialogTitle>
       <div style={{ padding: "20px" }}>
-        <TextField label="Input 1" fullWidth margin="normal" />
-        <TextField label="Input 2" fullWidth margin="normal" />
+        <TextField id="input1" label="Title" fullWidth margin="normal" />
+        <TextField id="input2" label="Description" fullWidth margin="normal" />
         <TextField
+          id="date"
           label="Choose a date"
           type="date"
           fullWidth
@@ -33,9 +48,12 @@ function SimpleDialog(props: SimpleDialogProps) {
             shrink: true,
           }}
         />
-        <FormControlLabel control={<Checkbox />} label="important" />
-        <FormControlLabel control={<Checkbox />} label="status" />
-        <Button variant="contained" color="primary" onClick={handleClose}>
+        <FormControlLabel
+          control={<Checkbox id="important" />}
+          label="Important"
+        />
+        <FormControlLabel control={<Checkbox id="status" />} label="Status" />
+        <Button variant="contained" color="primary" onClick={handleSubmit}>
           Submit
         </Button>
       </div>
