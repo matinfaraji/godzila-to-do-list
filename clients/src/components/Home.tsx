@@ -1,5 +1,4 @@
 import Cards from "./cards";
-// import SimpleDialogDemo from "./createTask";
 import Navbar from "./navbar";
 
 
@@ -9,7 +8,7 @@ export default function Home() {
     <div className="">
         <Navbar/>
         <Cards/>
-        {/* <SimpleDialogDemo/> */}
+       
     </div>
   )
 }

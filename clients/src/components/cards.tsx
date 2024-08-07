@@ -1,4 +1,3 @@
-import React from "react";
 import ViewComfyIcon from "@mui/icons-material/ViewComfy";
 import ViewHeadlineOutlinedIcon from "@mui/icons-material/ViewHeadlineOutlined";
 import TextField from "@mui/material/TextField";
@@ -11,17 +10,18 @@ import { Button, IconButton } from "@mui/material";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import StarOutlineOutlinedIcon from "@mui/icons-material/StarOutlineOutlined";
 import SimpleDialogDemo from "./createTask";
-import { useAppDispatch, useAppselctor } from "./store/store";
-import { deleteTask } from "./store/features/taskSlice";
+import { useAppDispatch, useAppselctor } from "./store/store"; 
+import { deleteTaskAsync } from "./store/features/taskSlice";
 
-const Cards: React.FC = () => {
+const Cards = () => {
   const tasks = useAppselctor((state) => state.tasks.tasks);
   const dispatch = useAppDispatch();
 
-  const handleDelete = (id: string) => {
-    dispatch(deleteTask(id));
+  const handleDelete = (_id) => {
+  
+    dispatch(deleteTaskAsync(_id));
+  
   };
-
   return (
     <div>
       <p>All tasks ({tasks.length} tasks)</p>
@@ -31,20 +31,28 @@ const Cards: React.FC = () => {
           <ViewComfyIcon />
         </div>
         <Autocomplete
-          id="disabled-options-demo"
+          id="task-filter"
           sx={{ width: 300 }}
-          renderInput={(params) => <TextField {...params} label="Disabled options" />}
-          options={[]}
+          renderInput={(params) => (
+            <TextField {...params} label="Filter tasks" />
+          )}
+          options={tasks.map((task) => task.title)} 
+          disableCloseOnSelect
         />
       </div>
       <div className="flex gap-7 px-10">
         {tasks.map((task) => (
-          <Card key={task.id} sx={{ width: "15rem" }}>
+          <Card key={task._id} sx={{ width: "15rem" }}>
+            
             <CardContent>
-              <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+              <Typography
+                sx={{ fontSize: 14 }}
+                color="text.secondary"
+                gutterBottom
+              >
                 {task.title}
               </Typography>
-              <Typography sx={{ mb: 17 }} color="text.secondary">
+              <Typography sx={{ mb: 2 }} color="text.secondary">
                 {task.description}
               </Typography>
               <Typography color="text.secondary">{task.date}</Typography>
@@ -52,7 +60,7 @@ const Cards: React.FC = () => {
             <hr />
             <CardActions>
               <Button size="small">Completed</Button>
-              <IconButton onClick={() => handleDelete(task.id)}>
+              <IconButton onClick={() => handleDelete(task._id)}>
                 <DeleteOutlineOutlinedIcon />
               </IconButton>
               <IconButton>
@@ -70,5 +78,4 @@ const Cards: React.FC = () => {
     </div>
   );
 };
-
 export default Cards;

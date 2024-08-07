@@ -14,9 +14,9 @@ export default function Navbar() {
     };
 
     updateDate();
-    const intervalId = setInterval(updateDate, 1000); // Update every second
+    const intervalId = setInterval(updateDate, 1000); 
 
-    return () => clearInterval(intervalId); // Cleanup interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
   return (
     <div>

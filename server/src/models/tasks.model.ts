@@ -10,12 +10,12 @@ interface ITask extends Document {
 }
 
 const TaskSchema = new Schema<ITask>({
-  title: { type: String, required: true },
-  date: { type: Date, required: true },
-  description: { type: String, required: true },
-  directory: { type: String, required: true },
-  important: { type: Boolean, required: true },
-  status: { type: Boolean, required: true },
+  title: { type: String},
+  date: { type: Date},
+  description: { type: String },
+  directory: { type: String },
+  important: { type: Boolean },
+  status: { type: Boolean },
 });
 
 const TasksModel = model<ITask>("Tasks", TaskSchema);

@@ -5,8 +5,8 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
-import { useAppDispatch } from "./store/store";
-import { addTask } from "./store/features/taskSlice";
+import { useDispatch } from 'react-redux';
+import { createTaskAsync, fetchTasksAsync } from "./store/features/taskSlice";
 import { v4 as uuidv4 } from "uuid"; 
 
 export interface SimpleDialogProps {
@@ -16,7 +16,8 @@ export interface SimpleDialogProps {
 
 function SimpleDialog(props: SimpleDialogProps) {
   const { onClose, open } = props;
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
+
 
   const handleSubmit = () => {
     const formData = {
@@ -24,11 +25,12 @@ function SimpleDialog(props: SimpleDialogProps) {
       title: (document.getElementById("input1") as HTMLInputElement).value,
       description: (document.getElementById("input2") as HTMLInputElement).value,
       date: (document.getElementById("date") as HTMLInputElement).value,
-      directory: "", // Assuming directory is not part of the form
+      directory: "", 
       important: (document.getElementById("important") as HTMLInputElement).checked,
       status: (document.getElementById("status") as HTMLInputElement).checked,
     };
-    dispatch(addTask(formData));
+
+    dispatch(createTaskAsync(formData));
     onClose("submit");
   };
 
@@ -63,6 +65,11 @@ function SimpleDialog(props: SimpleDialogProps) {
 
 export default function SimpleDialogDemo() {
   const [open, setOpen] = React.useState(false);
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(fetchTasksAsync());
+  }, [dispatch]);
 
   const handleClickOpen = () => {
     setOpen(true);
