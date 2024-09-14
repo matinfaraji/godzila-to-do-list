@@ -1,5 +1,7 @@
+import { createSlice, PayloadAction, createAsyncThunk, Slice, SliceCaseReducers } from "@reduxjs/toolkit";
+import { fetchTasks, createTask, deleteTaskApi } from "../../api/taskApi";
 
-export interface Task {
+interface Task {
   _id: number;
   title: string;
   date: string;
@@ -8,11 +10,6 @@ export interface Task {
   important: boolean;
   status: boolean;
 }
-
-
-
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchTasks, createTask, deleteTaskApi } from "../../api/taskApi";
 
 interface TaskState {
   tasks: Task[];
@@ -26,6 +23,7 @@ const initialState: TaskState = {
   error: null,
 };
 
+// Thunks
 export const fetchTasksAsync = createAsyncThunk<Task[]>(
   "tasks/fetchTasks",
   async () => {
@@ -34,7 +32,7 @@ export const fetchTasksAsync = createAsyncThunk<Task[]>(
   }
 );
 
-export const createTaskAsync = createAsyncThunk<Task, Omit<Task, 'id'>>(
+export const createTaskAsync = createAsyncThunk<Task, Omit<Task, '_id'>>(
   "tasks/createTask",
   async (taskData) => {
     const response = await createTask(taskData);
@@ -42,7 +40,7 @@ export const createTaskAsync = createAsyncThunk<Task, Omit<Task, 'id'>>(
   }
 );
 
-export const deleteTaskAsync = createAsyncThunk<string, string>(
+export const deleteTaskAsync = createAsyncThunk<number, number>(
   "tasks/deleteTask",
   async (taskId) => {
     await deleteTaskApi(taskId);
@@ -50,21 +48,22 @@ export const deleteTaskAsync = createAsyncThunk<string, string>(
   }
 );
 
-const tasksSlice = createSlice({
-  name: "task",
+// Slice
+const tasksSlice: Slice<TaskState, SliceCaseReducers<TaskState>> = createSlice({
+  name: "tasks",
   initialState,
   reducers: {
     addTask: (state, action: PayloadAction<Task>) => {
       state.tasks.push(action.payload);
     },
-    deleteTask: (state, action: PayloadAction<string>) => {
-      state.tasks = state.tasks.filter((task) => task._id.toString() !== action.payload);
+    deleteTask: (state, action: PayloadAction<number>) => {
+      state.tasks = state.tasks.filter(task => task._id !== action.payload);
     },
     updateTask: (state, action: PayloadAction<Task>) => {
       const updatedTask = action.payload;
-      const taskIndex = state.tasks.findIndex((task) => task._id === updatedTask._id);
+      const taskIndex = state.tasks.findIndex(task => task._id === updatedTask._id);
       if (taskIndex !== -1) {
-        state.tasks[taskIndex] = updatedTask; 
+        state.tasks[taskIndex] = updatedTask;
       }
     },
   },
@@ -98,9 +97,9 @@ const tasksSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(deleteTaskAsync.fulfilled, (state, action: PayloadAction<string>) => {
+      .addCase(deleteTaskAsync.fulfilled, (state, action: PayloadAction<number>) => {
         state.loading = false;
-        state.tasks = state.tasks.filter(task => task._id.toString() !== action.payload);
+        state.tasks = state.tasks.filter(task => task._id !== action.payload);
       })
       .addCase(deleteTaskAsync.rejected, (state, action) => {
         state.loading = false;
@@ -109,5 +108,6 @@ const tasksSlice = createSlice({
   },
 });
 
+// Export actions and reducer
 export const { addTask, deleteTask, updateTask } = tasksSlice.actions;
 export default tasksSlice.reducer;

@@ -10,18 +10,17 @@ import { Button, IconButton } from "@mui/material";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import StarOutlineOutlinedIcon from "@mui/icons-material/StarOutlineOutlined";
 import SimpleDialogDemo from "./createTask";
-import { useAppDispatch, useAppselctor } from "./store/store"; 
+import { useAppDispatch, useAppSelector } from "./store/store";
 import { deleteTaskAsync } from "./store/features/taskSlice";
 
 const Cards = () => {
-  const tasks = useAppselctor((state) => state.tasks.tasks);
-  const dispatch = useAppDispatch();
+  const tasks = useAppSelector((state) => state.tasks.tasks); // Correct hook name
+  const dispatch = useAppDispatch(); // Correct hook name
 
-  const handleDelete = (_id) => {
-  
+  const handleDelete = (_id: number) => {
     dispatch(deleteTaskAsync(_id));
-  
   };
+
   return (
     <div>
       <p>All tasks ({tasks.length} tasks)</p>
@@ -36,14 +35,13 @@ const Cards = () => {
           renderInput={(params) => (
             <TextField {...params} label="Filter tasks" />
           )}
-          options={tasks.map((task) => task.title)} 
+          options={tasks.map((task) => task.title)}
           disableCloseOnSelect
         />
       </div>
       <div className="flex gap-7 px-10">
         {tasks.map((task) => (
           <Card key={task._id} sx={{ width: "15rem" }}>
-            
             <CardContent>
               <Typography
                 sx={{ fontSize: 14 }}
@@ -65,7 +63,7 @@ const Cards = () => {
               </IconButton>
               <IconButton>
                 <StarOutlineOutlinedIcon
-                  sx={{ color: task.important ? "yellow" : "darkgray" }}
+                  sx={{ color: task.important ? "red" : "darkgray" }}
                 />
               </IconButton>
             </CardActions>
@@ -78,4 +76,5 @@ const Cards = () => {
     </div>
   );
 };
+
 export default Cards;
